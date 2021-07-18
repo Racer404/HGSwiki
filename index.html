@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+<title>HGS-WIKI</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8;">	
+<link href="./css/index.css"rel="stylesheet" type="text/css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<audio src="./mp3/rocketfuel.m4a" autoplay="autoplay"></audio>
+
+<link href="css/timeline.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/modernizr.js"></script>
+<script type="text/javascript">
+
+</script>
+	
+</head>
+
+
+
+<body>
+	<img src="./png/banner.png" width="100%"></img>
+
+
+	<section id="cd-timeline" class="cd-container">
+	</section> <!-- cd-timeline -->
+	<script>
+		function fixObj(obj){
+            var max;
+            for(var i=0; i<obj.length; i++){
+                for(var j=i; j<obj.length; j++){
+                    if(obj[i].date<obj[j].date){
+						max=obj[j];
+						obj[j]=obj[i];
+						obj[i]=max;
+						obj[i]=max;
+					}
+                }
+            }
+			return obj;
+		}
+	</script>
+	<script>
+		function showJson(){
+			var timelineContainer=document.getElementById("cd-timeline");
+			var request = new XMLHttpRequest();
+			request.open("GET","./data.json");
+			request.send(null);
+			request.onreadystatechange=function(){
+				if(request.readyState==4&&request.status==200){
+					var obj = JSON.parse(request.responseText);
+					console.log(obj);
+					obj=fixObj(obj);
+					console.log(obj);
+					for(i=0;i<obj.length;i++){
+						var divMain = document.createElement("div");
+						divMain.setAttribute("class","cd-timeline-block");
+							var div1 = document.createElement("div");
+							div1.setAttribute("class","cd-timeline-img cd-movie");
+								var img = document.createElement("img");
+								img.setAttribute("src","png/"+obj[i].svgpath+".svg");
+								img.setAttribute("alt","Movie");
+							div1.appendChild(img);
+							var div2 = document.createElement("div");
+							div2.setAttribute("class","cd-timeline-content");
+								var h2 = document.createElement("h2");
+								h2.innerHTML=obj[i].title;
+								div2.appendChild(h2);
+								var p = document.createElement("p");
+								p.innerHTML=obj[i].content;
+								div2.appendChild(p);
+								for(i1=0;i1<obj[i].character.length;i1++){
+									var a = document.createElement("a");
+									a.setAttribute("href","#");
+									a.setAttribute("class","cd-read-more");
+									a.innerHTML=obj[i].character[i1];
+									div2.appendChild(a);
+								}
+								var span = document.createElement("span");
+								span.setAttribute("class","cd-date");
+								var time=new Date(obj[i].date*1000);
+								span.innerHTML=time.getFullYear()+"/"+(time.getMonth()+1);
+								div2.appendChild(span);
+						divMain.appendChild(div1);
+						divMain.appendChild(div2);
+						
+						timelineContainer.appendChild(divMain);
+					}
+				}
+			};
+			
+			}
+		window.onload=function(){
+			showJson();
+			$(function(){
+				var $timeline_block = $('.cd-timeline-block');
+				//hide timeline blocks which are outside the viewport
+				$timeline_block.each(function(){
+					if($(this).offset().top > $(window).scrollTop()+$(window).height()*0.75) {
+						$(this).find('.cd-timeline-img, .cd-timeline-content').addClass('is-hidden');
+					}
+				});
+				//on scolling, show/animate timeline blocks when enter the viewport
+				$(window).on('scroll', function(){
+					$timeline_block.each(function(){
+						if( $(this).offset().top <= $(window).scrollTop()+$(window).height()*0.75 && $(this).find('.cd-timeline-img').hasClass('is-hidden') ) {
+							$(this).find('.cd-timeline-img, .cd-timeline-content').removeClass('is-hidden').addClass('bounce-in');
+						}
+					});
+				});
+			});
+		};
+	</script>
+
+	
+<footer>
+  <p style="color:cornsilk; font-family: sans-serif; font-variant: small-caps; font-size:50px;">Built bY: raCer404</p>
+  <p style="color:cornsilk; font-family: sans-serif; font-variant: small-caps; font-size:50px;">MainGraphicS: 穿鞋一米八</p>
+  <p style="color:cornsilk; font-family: sans-serif; font-variant: small-caps; font-size:50px;">ConTribUted By: Mashen, Tony ...</p>
+</footer>
+</body>
+
+</html>
