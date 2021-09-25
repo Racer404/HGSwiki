@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+<title>HGS-WIKI</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8;">	
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="./css/createwiki.css"rel="stylesheet" type="text/css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script type="text/javascript" src="js/modernizr.js"></script>
+
+<script type="text/javascript">
+	function delCharacter(node){
+		node.parentNode.remove();
+	}
+
+	function addCharacter(){
+	    var div=document.createElement("div");
+		div.setAttribute("class","rowDisplay");
+		var character=document.createElement("input");
+		character.setAttribute("class","wikiTableInputMini");
+		var delButton=document.createElement("button");
+		delButton.setAttribute("class","delButton");
+		delButton.innerHTML="X";
+		delButton.setAttribute("onclick","delCharacter(this)");
+		div.appendChild(character);
+		div.appendChild(delButton);
+		document.getElementById("characters").appendChild(div);
+	}
+</script>
+	
+</head>
+
+
+
+<body>
+	<img src="./png/banner.png" width="100%"></img>
+	<div class="wikiTable">
+		<h1 class="wikiTableText">词条名称</h1>
+		<input class="wikiTableInput"></input>
+		<h1 class="wikiTableText">词条内容</h1>
+		<input class="wikiTableInput"></input>
+		<h1 class="wikiTableText">词条发现时间</h1>
+		<div class="rowDisplay">
+			<input class="wikiTableInputMini" placeholder="年(例:2001)"></input>
+			<input class="wikiTableInputMini" placeholder="月(例:01)"></input>
+			<input class="wikiTableInputMini" placeholder="日(例:01)"></input>
+		</div>
+		
+		<div class="columnDisplay" id="characters">
+			<div class="rowDisplay">
+			<h1 class="wikiTableText">词条参与人</h1>
+			<button class="addButton" onclick="addCharacter()">+</button>
+			</div>
+		</div>
+	</div>
+	
+<footer>
+  <p style="color:cornsilk; font-family: sans-serif; font-variant: small-caps; font-size:50px;">Built bY: raCer404</p>
+  <p style="color:cornsilk; font-family: sans-serif; font-variant: small-caps; font-size:50px;">MainGraphicS: 穿鞋一米八</p>
+  <p style="color:cornsilk; font-family: sans-serif; font-variant: small-caps; font-size:50px;">ConTribUted By: Mashen, Tony ...</p>
+</footer>
+</body>
+
+</html>

@@ -5,11 +5,11 @@
 <head>
 <title>HGS-WIKI</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8;">	
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="./css/index.css"rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<audio src="./mp3/rocketfuel.m4a" autoplay="autoplay"></audio>
 
-<link href="css/timeline.css" rel="stylesheet" type="text/css" />
+<link href="css/timeline.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="js/modernizr.js"></script>
 <script type="text/javascript">
 
@@ -21,78 +21,80 @@
 
 <body>
 	<img src="./png/banner.png" width="100%"></img>
-
+	
+	<button class="createNewWikiButton" onclick="createNewWiki()">
+		<h1 class="createNewWikiText">创建新词条!</h1>
+	</button>
 
 	<section id="cd-timeline" class="cd-container">
 	</section> <!-- cd-timeline -->
+
 	<script>
-		function fixObj(obj){
-            var max;
-            for(var i=0; i<obj.length; i++){
-                for(var j=i; j<obj.length; j++){
-                    if(obj[i].date<obj[j].date){
-						max=obj[j];
-						obj[j]=obj[i];
-						obj[i]=max;
-						obj[i]=max;
-					}
-                }
-            }
-			return obj;
+		function createNewWiki(){
+		console.log(document.body.clientWidth);
+			if(document.body.clientWidth<800){
+				alert("请使用PC或Ipad端进行词条上传！");
+			}
+			else {
+				window.location.href = "./createNewWiki.html";
+			}
 		}
-	</script>
-	<script>
-		function showJson(){
+		
+		function requestTimelineLength(){
+			var request = new XMLHttpRequest();
+			request.open("GET","http://94.191.41.52:8080/hgswikiServlet/TimelineLength",false);
+			request.send(null);
+			return request.responseText;
+		}
+		
+		function showJson(length){
 			var timelineContainer=document.getElementById("cd-timeline");
 			var request = new XMLHttpRequest();
-			request.open("GET","./data.json");
-			request.send(null);
-			request.onreadystatechange=function(){
-				if(request.readyState==4&&request.status==200){
+			for(i=0;i<length;i++){
+				request.open("GET","http://94.191.41.52:8080/hgswikiServlet/TimelineByIndex?index="+i,false);
+				request.send(null);
 					var obj = JSON.parse(request.responseText);
-					console.log(obj);
-					obj=fixObj(obj);
-					console.log(obj);
-					for(i=0;i<obj.length;i++){
+					//console.log(obj);
 						var divMain = document.createElement("div");
 						divMain.setAttribute("class","cd-timeline-block");
 							var div1 = document.createElement("div");
 							div1.setAttribute("class","cd-timeline-img cd-movie");
 								var img = document.createElement("img");
-								img.setAttribute("src","png/"+obj[i].svgpath+".svg");
+								img.setAttribute("src","png/"+obj.svgpath+".svg");
 								img.setAttribute("alt","Movie");
 							div1.appendChild(img);
 							var div2 = document.createElement("div");
 							div2.setAttribute("class","cd-timeline-content");
 								var h2 = document.createElement("h2");
-								h2.innerHTML=obj[i].title;
+								h2.innerHTML=obj.title;
 								div2.appendChild(h2);
 								var p = document.createElement("p");
-								p.innerHTML=obj[i].content;
+								p.innerHTML=obj.content;
 								div2.appendChild(p);
-								for(i1=0;i1<obj[i].character.length;i1++){
+								for(i1=0;i1<obj.character.length;i1++){
 									var a = document.createElement("a");
 									a.setAttribute("href","#");
 									a.setAttribute("class","cd-read-more");
-									a.innerHTML=obj[i].character[i1];
+									a.innerHTML=obj.character[i1];
 									div2.appendChild(a);
 								}
 								var span = document.createElement("span");
 								span.setAttribute("class","cd-date");
-								var time=new Date(obj[i].date*1000);
+								var time=new Date(obj.date*1000);
 								span.innerHTML=time.getFullYear()+"/"+(time.getMonth()+1);
 								div2.appendChild(span);
 						divMain.appendChild(div1);
 						divMain.appendChild(div2);
 						
-						timelineContainer.appendChild(divMain);
-					}
-				}
-			};
+						timelineContainer.insertBefore(divMain,timelineContainer.childNodes[0]);
+			}
+			
 			
 			}
 		window.onload=function(){
-			showJson();
+			var length=requestTimelineLength();
+			showJson(length);
+			
 			$(function(){
 				var $timeline_block = $('.cd-timeline-block');
 				//hide timeline blocks which are outside the viewport
