@@ -8,6 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="./css/index.css"rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src='js/player_modified.js'></script>
 
 <link href="css/timeline.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="js/modernizr.js"></script>
@@ -26,6 +27,32 @@
 		<h1 class="createNewWikiText">创建新词条!</h1>
 	</button>
 
+
+		<div id='plv_1d8a822d9e20324d2d3ca8b1c7ceebed_1' style="margin: auto;"></div>
+		<script>
+		if(document.body.clientWidth<800)
+		{
+			var player = polyvPlayer({
+		  'wrap':'#plv_1d8a822d9e20324d2d3ca8b1c7ceebed_1',
+		  'width': document.body.clientWidth-17,
+		  'height': (document.body.clientWidth-17)/1.7,
+		  'vid': '1d8a822d9e20324d2d3ca8b1c7ceebed_1',
+		  'playsafe': '' // 播放加密视频的凭证, 取值参考文档: http://dev.polyv.net/?p=16673 
+			});
+		}
+		else{
+			var player = polyvPlayer({
+		  'wrap':'#plv_1d8a822d9e20324d2d3ca8b1c7ceebed_1',
+		  'width':'970',
+		  'height':'546',
+		  'vid': '1d8a822d9e20324d2d3ca8b1c7ceebed_1',
+		  'playsafe': '' // 播放加密视频的凭证, 取值参考文档: http://dev.polyv.net/?p=16673 
+			});
+			}
+		</script>
+
+	
+	
 	<section id="cd-timeline" class="cd-container">
 	</section> <!-- cd-timeline -->
 
@@ -117,9 +144,15 @@
 
 	
 <footer>
-  <p style="color:cornsilk; font-family: sans-serif; font-variant: small-caps; font-size:50px;">Built bY: raCer404</p>
-  <p style="color:cornsilk; font-family: sans-serif; font-variant: small-caps; font-size:50px;">MainGraphicS: 穿鞋一米八</p>
-  <p style="color:cornsilk; font-family: sans-serif; font-variant: small-caps; font-size:50px;">ConTribUted By: Mashen, Tony ...</p>
+  <div class="columnDisplay">
+	  <h1 class="footerH1">Built bY: 花果山</h1>
+	  <h1 class="footerH2">MainGraphicS: 穿鞋一米八</h1>
+	  <h1 class="footerH2">SomeGod: Mashen</h1>
+	  <h1 class="footerH2">TopBoxer: Tony</h1>
+	  <h1 class="footerH2">Explorer: raceR404</h1>
+	  <button class="footerH2" style="background-color:#958D75; border: 4mm ridge cornsilk; line-height:40px; font-weight:bold; padding-left:10px; padding-right:10px;">Where Am I?</button>
+  </div>
+  <h1 class="footerH2" style="color:white; width:220px; position:fixed; right:3px; bottom:10px;">京ICP备20005318号-2</h1>
 </footer>
 </body>
 
