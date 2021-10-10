@@ -53,6 +53,17 @@
 	align-items:center;
  }
  
+ .mobileSignInBox{
+		bottom:40%;
+}
+
+ .mobileWelcomeTitle{
+		font-size:100px;
+ }
+ 
+ .mobileWelcomeSubTitle{
+		font-size:40px;
+}
  
 @keyframes blackMaskUp{
 	from{height:0%}
@@ -65,5 +76,16 @@
 }
 
 @media screen and (max-width: 580px) {
-
+	.mobileSignInBox{
+		top:20%;
+		bottom:auto;
+	}
+	
+	.mobileWelcomeTitle{
+		font-size:70px;
+	}
+	
+	.mobileWelcomeSubTitle{
+		font-size:20px;
+	}
 }
