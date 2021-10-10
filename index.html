@@ -182,10 +182,13 @@
 			blackMask.style.height="0%";
 		}
 		function signInHGS(){
+			var nameInput=document.getElementById("nameInput").value;
+			if(nameInput!=""){
 			var request = new XMLHttpRequest();
-			request.open("GET","http://hgswiki.club:8080/hgswikiServlet/InsertMember?name="+document.getElementById("nameInput").value,false);
+			request.open("GET","http://hgswiki.club:8080/hgswikiServlet/InsertMember?name="+nameInput,false);
 			request.send(null);
 			console.log(request.responseText);
+			}
 			location.reload();
 		}
 	  </script>
