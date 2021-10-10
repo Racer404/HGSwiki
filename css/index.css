@@ -53,19 +53,15 @@
 	align-items:center;
  }
  
-@keyframes logoFadeIn{
-	from {opacity:0;}
-	to {opacity:1;}
+ 
+@keyframes blackMaskUp{
+	from{height:0%}
+	to{height:100%}
 }
 
-@keyframes fadeOut{
-	from {opacity:1;}
-	to {opacity:0;}
-}
-
-@font-face{
-     font-family: 'pixel'; 
-     src: url("../fonts/pixelfonttest.TTF");
+@keyframes blackMaskDown{
+	from{height:100%}
+	to{height:0%}
 }
 
 @media screen and (max-width: 580px) {

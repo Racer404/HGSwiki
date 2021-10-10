@@ -69,7 +69,7 @@
 		
 		function requestTimelineLength(){
 			var request = new XMLHttpRequest();
-			request.open("GET","http://94.191.41.52:8080/hgswikiServlet/TimelineLength",false);
+			request.open("GET","http://hgswiki.club:8080/hgswikiServlet/TimelineLength",false);
 			request.send(null);
 			return request.responseText;
 		}
@@ -78,7 +78,7 @@
 			var timelineContainer=document.getElementById("cd-timeline");
 			var request = new XMLHttpRequest();
 			for(i=0;i<length;i++){
-				request.open("GET","http://94.191.41.52:8080/hgswikiServlet/TimelineByIndex?index="+i,false);
+				request.open("GET","http://hgswiki.club:8080/hgswikiServlet/TimelineByIndex?index="+i,false);
 				request.send(null);
 					var obj = JSON.parse(request.responseText);
 					//console.log(obj);
@@ -144,16 +144,62 @@
 
 	
 <footer>
-  <div class="columnDisplay">
+  <div id="indexMemberHolder" class="columnDisplay">
 	  <h1 class="footerH1">Built bY: 花果山</h1>
-	  <h1 class="footerH2">MainGraphicS: 穿鞋一米八</h1>
-	  <h1 class="footerH2">SomeGod: Mashen</h1>
-	  <h1 class="footerH2">TopBoxer: Tony</h1>
-	  <h1 class="footerH2">Explorer: raceR404</h1>
-	  <button class="footerH2" style="background-color:#958D75; border: 4mm ridge cornsilk; line-height:40px; font-weight:bold; padding-left:10px; padding-right:10px;">Where Am I?</button>
+	  <script>
+		
+		function requestIndexMembers(){
+			var request = new XMLHttpRequest();
+			request.open("GET","http://hgswiki.club:8080/hgswikiServlet/IndexMembers",false);
+			request.send(null);
+			return request.responseText;
+		}
+		var indexMemberObj=JSON.parse(requestIndexMembers());
+		var membersLength=indexMemberObj.length;
+		var holder=document.getElementById("indexMemberHolder");
+		for(i=0;i<indexMemberObj.length;i++){
+			var footerH2=document.createElement("h1");
+			footerH2.setAttribute("class","footerH2");
+			footerH2.innerHTML=indexMemberObj[i];
+			holder.appendChild(footerH2);
+		}
+	  </script>
+	  
+	  <script>
+		function signInBoxOpen(){
+			var signInBox=document.getElementById("signInBox");
+			setTimeout("signInBox.style.display=null",350);
+			var blackMask=document.getElementById("blackmask");
+			blackMask.style.animation="blackMaskUp 1s";
+			blackMask.style.height="100%";
+			document.getElementById("countMembers").innerHTML="你是第"+(membersLength+1)+"位登记的生命体！";
+		}
+		function signInBoxClose(){
+			var signInBox=document.getElementById("signInBox");
+			setTimeout("signInBox.style.display='none'",250);
+			var blackMask=document.getElementById("blackmask");
+			blackMask.style.animation="blackMaskDown 1s";
+			blackMask.style.height="0%";
+		}
+		function signInHGS(){
+			var request = new XMLHttpRequest();
+			request.open("GET","http://hgswiki.club:8080/hgswikiServlet/InsertMember?name="+document.getElementById("nameInput").value,false);
+			request.send(null);
+			console.log(request.responseText);
+			location.reload();
+		}
+	  </script>
+	  <button class="footerH2" onclick="signInBoxOpen()" style="background-color:#958D75; border: 4mm ridge cornsilk; line-height:40px; font-weight:bold; padding-left:10px; padding-right:10px; margin-top:10px;">Where Am I?</button>
   </div>
-  <h1 class="footerH2" style="color:white; width:220px; position:fixed; right:3px; bottom:10px;">京ICP备20005318号-2</h1>
 </footer>
+	<div id="blackmask" onclick="signInBoxClose()" style="position:fixed; width:100%; height:0%; background-color:black;bottom:0px; animation-timing-function: ease-in-out;"></div>
+	<h1 class="footerH2" style="color:white; width:220px; position:fixed; right:3px; bottom:10px;">京ICP备20005318号-2</h1>
+	<div id="signInBox" class="columnDisplay" style="position:fixed; bottom:300px; width:100%; display:none;">
+		<h1 style="color:white; font-size:100px; font-style: italic; padding-bottom:10px;">欢迎回来！</h1>
+		<h1 id="countMembers" style="color:white; font-size:40px; font-style: italic; padding-bottom:10px;"></h1>
+		<input id="nameInput" style="font-size:40px; width:80%; text-align:center;" placeholder="请叫我："></input>
+		<button onclick="signInHGS()" class="footerH2" style="background-color:#958D75; border: 4mm ridge cornsilk; line-height:40px; font-weight:bold; padding-left:10px; padding-right:10px; margin-top:50px; font-style: italic; ">登记加入花果山！</button>
+	</div>
 </body>
 
 </html>
