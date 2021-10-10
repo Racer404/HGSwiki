@@ -173,6 +173,7 @@
 			blackMask.style.animation="blackMaskUp 1s";
 			blackMask.style.height="100%";
 			document.getElementById("countMembers").innerHTML="你是第"+(membersLength+1)+"位登记的生命体！";
+			document.getElementById("plv_1d8a822d9e20324d2d3ca8b1c7ceebed_1").style.visibility="hidden";
 		}
 		function signInBoxClose(){
 			var signInBox=document.getElementById("signInBox");
@@ -180,6 +181,7 @@
 			var blackMask=document.getElementById("blackmask");
 			blackMask.style.animation="blackMaskDown 1s";
 			blackMask.style.height="0%";
+			setTimeout("document.getElementById('plv_1d8a822d9e20324d2d3ca8b1c7ceebed_1').style.visibility='visible'",400);
 		}
 		function signInHGS(){
 			var nameInput=document.getElementById("nameInput").value;
