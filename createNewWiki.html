@@ -44,6 +44,7 @@
 		request.send(data);
 		if(request.responseText=="success"){
 			alert("上传成功！感谢您对花果山维基数据库的贡献!");
+			window.location.href="http://hgswiki.club";
 		}
 		else if(request.responseText=="failed"||request.responseText=="nullparams"){
 			alert("上传失败，请检查是否有未填项，词条是否重复(日期也不可重复)");
