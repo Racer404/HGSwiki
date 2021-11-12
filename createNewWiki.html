@@ -29,6 +29,27 @@
 		div.appendChild(delButton);
 		document.getElementById("characters").appendChild(div);
 	}
+	
+	function uploadNewWiki(){
+		var characters=document.getElementById("characters").childNodes;
+		var charatersJson=new Array(0);
+		for(var i=3;i<characters.length;i++){
+			charatersJson.push(characters[i].childNodes[0].value);
+		}
+		var date=new Date(document.getElementById("yearInput").value+"-"+document.getElementById("monthInput").value+"-"+document.getElementById("dayInput").value).valueOf()/1000;
+		var request = new XMLHttpRequest();
+		request.open("POST","http://hgswiki.club:8080/hgswikiServlet/InsertWiki",false);
+		request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		var data="title="+document.getElementById("titleInput").value+"&"+"date="+date+"&"+"character="+JSON.stringify(charatersJson)+"&"+"content="+document.getElementById("contentInput").value;
+		request.send(data);
+		if(request.responseText=="success"){
+			alert("上传成功！感谢您对花果山维基数据库的贡献!");
+		}
+		else if(request.responseText=="failed"||request.responseText=="nullparams"){
+			alert("上传失败，请检查是否有未填项，词条是否重复(日期也不可重复)");
+		}
+	}
+
 </script>
 	
 </head>
@@ -39,14 +60,14 @@
 	<img src="./png/banner.png" width="100%"></img>
 	<div class="wikiTable">
 		<h1 class="wikiTableText">词条名称</h1>
-		<input class="wikiTableInput"></input>
+		<input id="titleInput" class="wikiTableInput"></input>
 		<h1 class="wikiTableText">词条内容</h1>
-		<input class="wikiTableInput"></input>
+		<input id="contentInput" class="wikiTableInput"></input>
 		<h1 class="wikiTableText">词条发现时间</h1>
 		<div class="rowDisplay">
-			<input class="wikiTableInputMini" placeholder="年(例:2001)"></input>
-			<input class="wikiTableInputMini" placeholder="月(例:01)"></input>
-			<input class="wikiTableInputMini" placeholder="日(例:01)"></input>
+			<input id="yearInput" class="wikiTableInputMini" placeholder="年(例:2001)"></input>
+			<input id="monthInput" class="wikiTableInputMini" placeholder="月(例:01)"></input>
+			<input id="dayInput" class="wikiTableInputMini" placeholder="日(例:01)"></input>
 		</div>
 		
 		<div class="columnDisplay" id="characters">
@@ -55,13 +76,71 @@
 			<button class="addButton" onclick="addCharacter()">+</button>
 			</div>
 		</div>
+		<button class="uploadButton" onclick="uploadNewWiki()">上传！</button>
+		
 	</div>
 	
+	
+	
 <footer>
-  <p style="color:cornsilk; font-family: sans-serif; font-variant: small-caps; font-size:50px;">Built bY: raCer404</p>
-  <p style="color:cornsilk; font-family: sans-serif; font-variant: small-caps; font-size:50px;">MainGraphicS: 穿鞋一米八</p>
-  <p style="color:cornsilk; font-family: sans-serif; font-variant: small-caps; font-size:50px;">ConTribUted By: Mashen, Tony ...</p>
+  <div id="indexMemberHolder" class="columnDisplay">
+	  <h1 class="footerH1">Built bY: 花果山</h1>
+	  <script>
+		function requestIndexMembers(){
+			var request = new XMLHttpRequest();
+			request.open("GET","http://hgswiki.club:8080/hgswikiServlet/IndexMembers",false);
+			request.send(null);
+			return request.responseText;
+		}
+		var indexMemberObj=JSON.parse(requestIndexMembers());
+		var membersLength=indexMemberObj.length;
+		var holder=document.getElementById("indexMemberHolder");
+		for(i=0;i<indexMemberObj.length;i++){
+			var footerH2=document.createElement("h1");
+			footerH2.setAttribute("class","footerH2");
+			footerH2.innerHTML=indexMemberObj[i];
+			holder.appendChild(footerH2);
+		}
+	  </script>
+	  
+	  <script>
+		function signInBoxOpen(){
+			var signInBox=document.getElementById("signInBox");
+			setTimeout("signInBox.style.display=null",350);
+			var blackMask=document.getElementById("blackmask");
+			blackMask.style.animation="blackMaskUp 1s";
+			blackMask.style.height="100%";
+			document.getElementById("countMembers").innerHTML="你是第"+(membersLength+1)+"位登记的生命体！";
+		}
+		function signInBoxClose(){
+			var signInBox=document.getElementById("signInBox");
+			setTimeout("signInBox.style.display='none'",250);
+			var blackMask=document.getElementById("blackmask");
+			blackMask.style.animation="blackMaskDown 1s";
+			blackMask.style.height="0%";
+		}
+		function signInHGS(){
+			var nameInput=document.getElementById("nameInput").value;
+			if(nameInput!=""){
+			var request = new XMLHttpRequest();
+			request.open("GET","http://hgswiki.club:8080/hgswikiServlet/InsertMember?name="+nameInput,false);
+			request.send(null);
+			console.log(request.responseText);
+			}
+			location.reload();
+		}
+	  </script>
+	  <button class="footerH2" onclick="signInBoxOpen()" style="background-color:#958D75; border: 4mm ridge cornsilk; line-height:40px; font-weight:bold; padding-left:10px; padding-right:10px; margin-top:10px;">Where Am I?</button>
+  </div>
 </footer>
+	<div id="blackmask" onclick="signInBoxClose()" style="position:fixed; width:100%; height:0%; background-color:black;bottom:0px; animation-timing-function: ease-in-out;"></div>
+	<h1 class="footerH2" style="color:white; width:220px; position:fixed; right:3px; bottom:10px;">京ICP备20005318号-2</h1>
+	<div id="signInBox" class="columnDisplay mobileSignInBox" style="position:fixed; width:100%; display:none;">
+		<h1 class="mobileWelcomeTitle" style="color:white; font-style: italic; padding-bottom:10px;">欢迎回来！</h1>
+		<h1 class="mobileWelcomeSubTitle" id="countMembers" style="color:white; font-style: italic; padding-bottom:10px;"></h1>
+		<input id="nameInput" style="font-size:40px; width:80%; text-align:center;" placeholder="请叫我："></input>
+		<button onclick="signInHGS()" class="footerH2" style="background-color:#958D75; border: 4mm ridge cornsilk; line-height:40px; font-weight:bold; padding-left:10px; padding-right:10px; margin-top:50px; font-style: italic; ">登记加入花果山！</button>
+	</div>
 </body>
 
 </html>
